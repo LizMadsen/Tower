@@ -10,7 +10,7 @@ class AttendeeService {
       throw new BadRequest('You are attending this event!')
     }
     const attending = await dbContext.Attendee.create(body)
-    await attending.populate('account event')
+    await attending.populate('Attend Event')
     towerEvent.capacity--
     return attending
   }

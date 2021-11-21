@@ -6,7 +6,7 @@
   </div>
   <div class="row m-0 justify-content-center">
     <div class="col-11 my-3 card p-3 bg-white rounded elevation-3">
-      NAVIGATION
+      <Navigation />
     </div>
   </div>
   <div class="row m-0 justify-content-around">
