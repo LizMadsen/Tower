@@ -1,7 +1,7 @@
 import { dbContext } from '../db/DbContext'
 import { BadRequest, Forbidden } from '../utils/Errors'
 
-class CommentsService {
+class CommentService {
   async createComment(body) {
     const newComment = await dbContext.Comment.create(body)
     return newComment.populate('creator')
@@ -10,7 +10,7 @@ class CommentsService {
   async getCommentsByEvent(id) {
     const foundComment = await dbContext.Comment.find({ eventId: id }).populate('creator')
     if (!foundComment) {
-      throw new BadRequest('this does not exist')
+      throw new BadRequest('This comment does not exist.')
     }
     return foundComment
   }
@@ -26,10 +26,10 @@ class CommentsService {
   async removeComment(commentId, userId) {
     const comment = await this.getCommentsById(commentId)
     if (comment.creatorId.toString() !== userId) {
-      throw new Forbidden('ah ah ah thats a no no')
+      throw new Forbidden('Error')
     }
     await dbContext.Comment.findByIdAndDelete(commentId)
   }
 }
 
-export const commentsService = new CommentsService()
+export const commentService = new CommentService()

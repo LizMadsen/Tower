@@ -1,5 +1,5 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
-import { commentsService } from '../services/CommentsService'
+import { commentService } from '../services/CommentService'
 import BaseController from '../utils/BaseController'
 
 export class CommentsController extends BaseController {
@@ -15,7 +15,7 @@ export class CommentsController extends BaseController {
   async createComment(req, res, next) {
     try {
       req.body.creatorId = req.userInfo.id
-      const comment = await commentsService.createComment(req.body)
+      const comment = await commentService.createComment(req.body)
       res.send(comment)
     } catch (error) {
       next(error)
@@ -24,7 +24,7 @@ export class CommentsController extends BaseController {
 
   async getCommentsByEvent(req, res, next) {
     try {
-      const comment = await commentsService.getCommentsByEvent(req.params.eventId)
+      const comment = await commentService.getCommentsByEvent(req.params.eventId)
       return res.send(comment)
     } catch (error) {
       next(error)
@@ -35,8 +35,8 @@ export class CommentsController extends BaseController {
     try {
       const userId = req.userInfo.id
       const commentId = req.params.commentId
-      await commentsService.removeComment(commentId, userId)
-      res.send('this comment has been deleted ')
+      await commentService.removeComment(commentId, userId)
+      res.send('You have deleted this comment.')
     } catch (error) {
       next(error)
     }

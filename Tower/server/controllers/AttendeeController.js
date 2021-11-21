@@ -1,5 +1,5 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
-import { attendeesService } from '../services/AttendeesService'
+import { attendeeService } from '../services/AttendeeService'
 import BaseController from '../utils/BaseController'
 
 export class AttendeesController extends BaseController {
@@ -9,7 +9,7 @@ export class AttendeesController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('/attendees', this.attendEvent)
       .delete('/:attendeeId', this.removeAttendee)
-      .get('/attendees', this.getMyAttendance)
+      .get('/attendees', this.getAttendance)
       .get('/events/:eventId/attendees', this.getEventAttendance)
   }
 
@@ -17,17 +17,17 @@ export class AttendeesController extends BaseController {
   async attendEvent(req, res, next) {
     try {
       req.body.accountId = req.userInfo.id
-      const attended = await attendeesService.attendEvent(req.body)
+      const attended = await attendeeService.attendEvent(req.body)
       return res.send(attended)
     } catch (error) {
       next(error)
     }
   }
 
-  async getMyAttendance(req, res, next) {
+  async getAttendance(req, res, next) {
     try {
       const query = req.query
-      const attendance = await attendeesService.getMyAttendance(query)
+      const attendance = await attendeeService.getAttendance(query)
       return res.send(attendance)
     } catch (error) {
       next(error)
@@ -38,7 +38,7 @@ export class AttendeesController extends BaseController {
     try {
       req.body.eventId = req.params.eventId
       req.body.creatorId = req.userInfo.id
-      const attendance = await attendeesService.getMyAttendance({ eventId: req.body.eventId })
+      const attendance = await attendeeService.getAttendance({ eventId: req.body.eventId })
       return res.send(attendance)
     } catch (error) {
       next(error)
@@ -49,8 +49,8 @@ export class AttendeesController extends BaseController {
     try {
       const userId = req.userInfo.id
       const attendeeId = req.params.attendeeId
-      await attendeesService.removeAttendee(attendeeId, userId)
-      res.send('this attendee has been removed from event')
+      await attendeeService.removeAttendee(attendeeId, userId)
+      res.send('Attendee has been removed')
     } catch (error) {
       next(error)
     }

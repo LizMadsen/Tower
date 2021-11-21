@@ -1,7 +1,7 @@
 import { dbContext } from '../db/DbContext'
 import { BadRequest, Forbidden } from '../utils/Errors'
 
-class TowerEventsService {
+class TowerEventService {
   async createEvent(body) {
     const newEvent = await dbContext.TowerEvent.create(body)
     return newEvent.populate('creator')
@@ -14,7 +14,7 @@ class TowerEventsService {
   async getEventById(id) {
     const Event = await dbContext.TowerEvent.findById(id).populate('creator')
     if (!Event) {
-      throw new BadRequest('Invalid Id Please Revise and Resend...')
+      throw new BadRequest('ID invalid')
     }
     return Event
   }
@@ -22,9 +22,9 @@ class TowerEventsService {
   async editEvent(body) {
     const Event = await this.getEventById({ _id: body.id })
     if (Event.creatorId.toString() !== body.creatorId) {
-      throw new Forbidden('you cannot edit this event ya silly willy')
+      throw new Forbidden('You can not edit this event.')
     } else if (Event.isCanceled) {
-      throw new BadRequest('you cant edit a canceled event')
+      throw new BadRequest('You can not edit an event that has been canceled.')
     }
     const newEvent = dbContext.TowerEvent.findByIdAndUpdate({ _id: body.id, creatorId: body.creatorId }, body, { new: true })
     return newEvent
@@ -33,7 +33,7 @@ class TowerEventsService {
   async cancelEvent(id, body, update) {
     const Event = await this.getEventById({ _id: body.id })
     if (Event.creatorId.toString() !== body.creatorId) {
-      throw new Forbidden('na')
+      throw new Forbidden('Error')
     }
     const newEvent = await dbContext.TowerEvent.findByIdAndUpdate(id, update, { new: true })
 
@@ -41,4 +41,4 @@ class TowerEventsService {
   }
 }
 
-export const towerEventsService = new TowerEventsService()
+export const towerEventService = new TowerEventService()
