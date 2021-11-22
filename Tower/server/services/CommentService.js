@@ -18,7 +18,7 @@ class CommentService {
   async getCommentsById(id) {
     const comment = await dbContext.Comment.findById(id).populate('creator')
     if (!comment) {
-      throw new BadRequest('Invalid id ')
+      throw new BadRequest('Invalid ID')
     }
     return comment
   }

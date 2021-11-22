@@ -1,6 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
+      <img class="towerLogo" src="https://i.imgur.com/9JMBIu6.png" />
       <div class="d-flex flex-column align-items-center">TOWER</div>
     </router-link>
     <button
@@ -14,17 +15,11 @@
     >
       <span class="navbar-toggler-icon" />
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
+    <div class="collapse navbar-collapse" align="center" id="navbarText">
+      <ul class="navbar-nav me-auto"></ul>
       <span class="navbar-text">
         <button
-          class="
-            btn
-            selectable
-            text-success
-            lighten-30
-            text-uppercase
-            my-2 my-lg-0
-          "
+          class="btn selectable text-success lighten-30 my-2 my-lg-0"
           @click="login"
           v-if="!user.isAuthenticated"
         >
@@ -64,10 +59,18 @@
               @click="logout"
             >
               <i class="mdi mdi-logout"></i>
-              logout
+              Logout
             </div>
           </div>
         </div>
+        <button class="btn selectable text-success lighten-30 my-2 my-lg-0">
+          <img class="createEventBtn" src="https://i.imgur.com/CYu36JW.png" />
+          Create Event
+        </button>
+        <Modal id="create-event">
+          <template #modal-title>Create Event</template>
+          <template #modal-body><CreateEvent /> </template>
+        </Modal>
       </span>
     </div>
   </nav>
@@ -115,5 +118,11 @@ a:hover {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.createEventBtn {
+  height: 50px;
+}
+.towerLogo {
+  height: 75px;
 }
 </style>

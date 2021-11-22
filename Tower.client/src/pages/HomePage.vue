@@ -19,7 +19,7 @@
     <div class="col-2 my-3 card p-5 bg-white rounded elevation-3 eventCards">
       EVENT CARDS
     </div>
-    <div class="col-2 my-3 card p-5 bg-white rounded elevation-3 eventCards">
+    <div class="col-2 my-3 card p-5 text-dark rounded elevation-3 eventCards">
       EVENT CARDS
     </div>
   </div>

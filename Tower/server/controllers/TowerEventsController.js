@@ -1,6 +1,7 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import { towerEventService } from '../services/TowerEventService'
 import BaseController from '../utils/BaseController'
+import { logger } from '../utils/Logger'
 
 export class TowerEventController extends BaseController {
   constructor() {
@@ -16,6 +17,7 @@ export class TowerEventController extends BaseController {
 
   async createEvent(req, res, next) {
     try {
+      logger.log(res)
       req.body.creatorId = req.userInfo.id
       const Event = await towerEventService.createEvent(req.body)
       res.send(Event)
@@ -25,6 +27,7 @@ export class TowerEventController extends BaseController {
   }
 
   async getAllEvents(req, res, next) {
+    logger.log(req)
     try {
       const query = req.query
       const Events = await towerEventService.getAllEvents(query)
