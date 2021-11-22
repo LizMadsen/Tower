@@ -10,7 +10,8 @@ export const TowerEventSchema = new Schema({
   startDate: { type: Date, default: 'To Be Determined' },
   isCanceled: { type: Boolean, default: false },
   type: { type: String, enum: ['concert', 'convention', 'sport', 'digital'] },
-  creatorId: { type: Schema.Types.ObjectId, ref: 'Profile', required: true }
+  creatorId: { type: Schema.Types.ObjectId, ref: 'Account', required: true },
+  creator: { type: Object, required: true }
 
 }, { timestamps: true, toJSON: { virtuals: true } })
 
@@ -18,5 +19,5 @@ TowerEventSchema.virtual('creator', {
   localField: 'creatorId',
   foreignField: '_id',
   justOne: true,
-  ref: 'Profile'
+  ref: 'Account'
 })

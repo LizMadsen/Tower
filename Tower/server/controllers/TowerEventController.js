@@ -1,19 +1,21 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import { towerEventService } from '../services/TowerEventService'
 import BaseController from '../utils/BaseController'
-import { logger } from '../utils/Logger'
+import { attendeeService } from '../services/AttendeeService'
+import { commentService } from '../services/CommentService'
 
-export class TowerEventController extends BaseController {
+export class TowerEventsController extends BaseController {
   constructor() {
     super('/api/events')
     this.router
-      .use(Auth0Provider.getAuthorizedUserInfo)
-      .post('', this.createEvent)
       .get('', this.getAllEvents)
       .get('/:eventId', this.getEventById)
+      .get('/:eventId/comments', this.getCommentsByEvent)
+      .get('/:eventId/attendees', this.getEventAttendance)
+      .use(Auth0Provider.getAuthorizedUserInfo)
+      .post('', this.createEvent)
       .put('/:eventId', this.editEvent)
       .delete('/:eventId', this.cancelEvent)
-    logger.log(this.router)
   }
 
   async createEvent(req, res, next) {
@@ -21,6 +23,24 @@ export class TowerEventController extends BaseController {
       req.body.creatorId = req.userInfo.id
       const Event = await towerEventService.createEvent(req.body)
       res.send(Event)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getCommentsByEvent(req, res, next) {
+    try {
+      const comment = await commentService.getCommentsByEvent(req.params.eventId)
+      return res.send(comment)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getEventAttendance(req, res, next) {
+    try {
+      const events = await attendeeService.getEventAttendance({ eventId: req.params.eventId })
+      return res.send(events)
     } catch (error) {
       next(error)
     }
@@ -59,10 +79,10 @@ export class TowerEventController extends BaseController {
 
   async cancelEvent(req, res, next) {
     try {
-      req.body.creatorId = req.userInfo.id
+      const creatorId = req.userInfo.id
       const id = req.params.eventId
 
-      const canceledEvent = await towerEventService.cancelEvent(id, req.body, { isCanceled: true })
+      const canceledEvent = await towerEventService.cancelEvent(id, { isCanceled: true, creatorId: creatorId })
       return res.send(canceledEvent)
     } catch (error) {
       next(error)

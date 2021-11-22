@@ -4,7 +4,8 @@ import { BadRequest, Forbidden } from '../utils/Errors'
 class TowerEventService {
   async createEvent(body) {
     const newEvent = await dbContext.TowerEvent.create(body)
-    return newEvent.populate('creator')
+    await newEvent.populate('creator')
+    return newEvent
   }
 
   async getAllEvents(query = {}) {

@@ -4,12 +4,11 @@ import BaseController from '../utils/BaseController'
 
 export class CommentsController extends BaseController {
   constructor() {
-    super('/api')
+    super('/api/comments')
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
-      .post('/comments', this.createComment)
-      .get('/events/:eventId/comments', this.getCommentsByEvent)
-      .delete('/comments/:commentId', this.removeComment)
+      .post('', this.createComment)
+      .delete('/:commentId', this.removeComment)
   }
 
   async createComment(req, res, next) {
@@ -22,21 +21,12 @@ export class CommentsController extends BaseController {
     }
   }
 
-  async getCommentsByEvent(req, res, next) {
-    try {
-      const comment = await commentService.getCommentsByEvent(req.params.eventId)
-      return res.send(comment)
-    } catch (error) {
-      next(error)
-    }
-  }
-
   async removeComment(req, res, next) {
     try {
       const userId = req.userInfo.id
       const commentId = req.params.commentId
       await commentService.removeComment(commentId, userId)
-      res.send('You have deleted this comment.')
+      res.send('This comment has been removed')
     } catch (error) {
       next(error)
     }

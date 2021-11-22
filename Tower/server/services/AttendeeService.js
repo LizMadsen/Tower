@@ -1,7 +1,6 @@
 import { dbContext } from '../db/DbContext'
 import { BadRequest, Forbidden } from '../utils/Errors'
 import { towerEventService } from './TowerEventService'
-import { commentService } from './CommentService'
 
 class AttendeeService {
   async attendEvent(body) {
