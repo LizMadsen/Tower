@@ -4,7 +4,7 @@ import BaseController from '../utils/BaseController'
 import { attendeeService } from '../services/AttendeeService'
 import { commentService } from '../services/CommentService'
 
-export class TowerEventsController extends BaseController {
+export class TowerEventController extends BaseController {
   constructor() {
     super('/api/events')
     this.router
