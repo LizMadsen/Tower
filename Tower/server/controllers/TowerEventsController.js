@@ -13,11 +13,11 @@ export class TowerEventController extends BaseController {
       .get('/:eventId', this.getEventById)
       .put('/:eventId', this.editEvent)
       .delete('/:eventId', this.cancelEvent)
+    logger.log(this.router)
   }
 
   async createEvent(req, res, next) {
     try {
-      logger.log(res)
       req.body.creatorId = req.userInfo.id
       const Event = await towerEventService.createEvent(req.body)
       res.send(Event)
@@ -27,7 +27,6 @@ export class TowerEventController extends BaseController {
   }
 
   async getAllEvents(req, res, next) {
-    logger.log(req)
     try {
       const query = req.query
       const Events = await towerEventService.getAllEvents(query)

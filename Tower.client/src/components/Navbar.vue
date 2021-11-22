@@ -63,11 +63,15 @@
             </div>
           </div>
         </div>
-        <button class="btn selectable text-success lighten-30 my-2 my-lg-0">
+        <button
+          class="btn text-success lighten-30 my-2 my-lg-0"
+          data-bs-toggle="modal"
+          data-bs-target="#createEvent"
+        >
           <img class="createEventBtn" src="https://i.imgur.com/CYu36JW.png" />
           Create Event
         </button>
-        <Modal id="create-event">
+        <Modal id="createEvent">
           <template #modal-title>Create Event</template>
           <template #modal-body><CreateEvent /> </template>
         </Modal>

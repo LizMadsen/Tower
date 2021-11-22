@@ -11,7 +11,7 @@
           id="eventName"
           placeholder="Event name"
           min="10"
-          max="200"
+          max="100"
           required
         />
         <input
@@ -22,7 +22,34 @@
           id="eventDescription"
           placeholder="Event description"
           min="10"
-          max="100"
+          max="250"
+          required
+        />
+        <input
+          v-model="state.editable.startDate"
+          class="form-control mb-3 justify-content-around d-flex"
+          type="date"
+          name="startDate"
+          id="startDate"
+          placeholder="Start Date"
+          required
+        />
+        <input
+          v-model="state.editable.capacity"
+          class="form-control mb-3 justify-content-around d-flex"
+          type="number"
+          name="capacity"
+          id="capacity"
+          placeholder="Capacity"
+          required
+        />
+        <input
+          v-model="state.editable.coverImg"
+          class="form-control mb-3 justify-content-around d-flex"
+          type="text"
+          name="coverImg"
+          id="coverImg"
+          placeholder="Image URL"
           required
         />
       </div>
@@ -41,9 +68,37 @@
 </template>
 
 <script>
+import { watchEffect } from "@vue/runtime-core"
+import { useRoute, useRouter } from "vue-router"
+import { Modal } from 'bootstrap';
+import { reactive } from '@vue/reactivity';
+import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
+import { eventService } from '../services/EventService'
+
 export default {
   setup() {
-    return {}
+    const route = useRoute()
+    const router = useRouter()
+    const state = reactive({
+      editable: {}
+    })
+    watchEffect(async () => {
+
+    })
+    return {
+      state,
+      async createEvent() {
+        try {
+          logger.log("test")
+          await eventService.createEvent(state.editable)
+          Modal.getOrCreateInstance(document.getElementById('CreateEvent')).hide();
+        } catch (error) {
+          logger.log(error)
+          Pop.toast("Create event did not work.", 'error')
+        }
+      }
+    }
   }
 }
 </script>
