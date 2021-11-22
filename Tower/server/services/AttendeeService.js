@@ -1,41 +1,42 @@
 import { dbContext } from '../db/DbContext'
 import { BadRequest, Forbidden } from '../utils/Errors'
 import { towerEventService } from './TowerEventService'
+import { commentService } from './CommentService'
 
 class AttendeeService {
   async attendEvent(body) {
-    const towerEvent = await towerEventService.getEventById(body.eventId)
-    const found = await dbContext.Attendee.findOne({ eventId: body.eventId, accountId: body.accountId })
-    if (found) {
-      throw new BadRequest('You are attending this event!')
-    }
-    const attending = await dbContext.Attendee.create(body)
-    await attending.populate('Attend Event')
-    towerEvent.capacity--
-    return attending
+    const attend = await dbContext.Attendee.create(body)
+    await attend.populate('account event')
+    await towerEventService.capacity(body.eventId)
+    return attend
+  }
+
+  async getEventAttendance(query = {}) {
+    const events = await dbContext.Attendee.find(query)
+      .populate('account event')
+    return events
   }
 
   async getAttendeesById(id) {
     const attendee = await dbContext.Attendee.findById(id).populate('creator')
     if (!attendee) {
-      throw new BadRequest('ID invalid')
+      throw new BadRequest('Invalid id ')
     }
     return attendee
   }
 
   async removeAttendee(attendeeId, userId) {
-    const attendee = await this.getAttendeesById(attendeeId)
-    if (attendee.creatorId.toString() !== userId) {
-      throw new Forbidden('Sorry, you cannot do that!')
+    const found = await dbContext.Attendee.findById(attendeeId)
+    if (found.accountId.toString() !== userId) {
+      throw new Forbidden('invalid entry')
     }
     await dbContext.Attendee.findByIdAndDelete(attendeeId)
+    await towerEventService.capacitydown(found.eventId)
   }
 
-  async getAttendance(query = {}) {
-    const myAttendance = await dbContext.TowerEvent.find(query).populate('account', 'name picture')
-    if (!myAttendance) {
-      throw new BadRequest('ID invalid')
-    }
+  async getMyAttendance(query = {}) {
+    const myAttendance = await dbContext.Attendee.find(query).populate('event', 'name picture')
+
     return myAttendance
   }
 }
