@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-lg navbar-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <img class="towerLogo" src="https://i.imgur.com/9JMBIu6.png" />
-      <div class="d-flex flex-column align-items-center">TOWER</div>
+      <img class="towerLogo" src="https://i.imgur.com/FJsYad4.png" />
+      <div class="d-flex flex-column align-items-center"></div>
     </router-link>
     <button
       class="navbar-toggler"
@@ -19,7 +19,7 @@
       <ul class="navbar-nav me-auto"></ul>
       <span class="navbar-text">
         <button
-          class="btn selectable text-success lighten-30 my-2 my-lg-0"
+          class="btn selectable text-light my-2 my-lg-0"
           @click="login"
           v-if="!user.isAuthenticated"
         >
@@ -37,9 +37,9 @@
               :src="user.picture"
               alt="user photo"
               height="40"
-              class="rounded"
+              class="profilePic"
             />
-            <span class="mx-3 text-success lighten-30">{{ user.name }}</span>
+            <span class="mx-3 text-light">{{ user.name }}</span>
           </div>
           <div
             class="dropdown-menu p-0 list-group w-100"
@@ -64,7 +64,7 @@
           </div>
         </div>
         <button
-          class="btn text-success lighten-30 my-2 my-lg-0"
+          class="btn text-light lighten-30 my-2 my-lg-0 align-items-middle"
           data-bs-toggle="modal"
           data-bs-target="#createEvent"
         >
@@ -128,5 +128,11 @@ a:hover {
 }
 .towerLogo {
   height: 75px;
+}
+.navbar {
+  background: #3770b1;
+}
+.profilePic {
+  border-radius: 50%;
 }
 </style>
