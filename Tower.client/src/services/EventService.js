@@ -31,6 +31,11 @@ class EventService{
     AppState.comments = res.data
   }
 
+  async removeComment(id){
+    const res = await api.delete(`api/events/${id}/comments`)
+    AppState.comments = res.data
+  }
+
 }
 
 export const eventService = new EventService()
