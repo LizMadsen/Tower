@@ -3,7 +3,7 @@
     <img class="imgFit" :src="event.coverImg" alt="Event cover image" />
     <h3>{{ event.name }}</h3>
     <p>
-      <b>Capacity:</b> {{ event.capacity }} <br /><b>Start Date:</b>
+      <b>Capacity:</b> 0/{{ event.capacity }} <br /><b>Start Date:</b>
       {{ event.startDate }} <br /><b>Location</b>: {{ event.location }}
     </p>
     <p>{{ event.description }}</p>
@@ -28,8 +28,9 @@ export default {
       async linkEvent(id) {
         try {
           if (id) {
-            router.push({ path: '/eventdetailspage/' + id })
-            AppState.activeEvent = id
+            router.push({ path: '/eventdetails/' + id })
+            AppState.activeEvent = await eventService.getActiveEvent(id);
+            AppState.comments = await eventService.getCommentsByEvent(id);
           }
         } catch (error) {
           logger.log(error)

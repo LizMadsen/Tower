@@ -17,8 +17,18 @@ class EventService{
 
   async createEvent(event){
     const res = await api.post('api/events/', event)
-    logger.log(res.data)
+    // logger.log(res.data)
     AppState.activeEvent = res.data
+  }
+
+  async createComment(comment){
+    const res = await api.post('api/comments/', comment)
+  }
+
+  async getCommentsByEvent(id){
+    logger.log("sdlfjh")
+    const res = await api.get(`api/events/${id}/comments`)
+    AppState.comments = res.data
   }
 
 }

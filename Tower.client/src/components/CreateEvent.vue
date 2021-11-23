@@ -111,6 +111,7 @@ import { reactive } from '@vue/reactivity';
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { eventService } from '../services/EventService'
+import { AppState } from "../AppState";
 
 export default {
   setup() {
@@ -129,7 +130,8 @@ export default {
         try {
           logger.log(state.editable)
           await eventService.createEvent(state.editable)
-          Modal.getOrCreateInstance(document.getElementById('CreateEvent')).hide();
+          Modal.getOrCreateInstance(document.getElementById('createEvent')).hide();
+          router.push({ name: 'EventDetails', params: { id: AppState.activeEvent.id } })
         } catch (error) {
           logger.log(error)
           Pop.toast("Create event did not work.", 'error')
