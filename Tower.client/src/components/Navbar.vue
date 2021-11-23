@@ -75,6 +75,20 @@
           <template #modal-title>Create Event</template>
           <template #modal-body><CreateEvent /> </template>
         </Modal>
+        <p>
+          <button
+            class="btn text-light lighten-30 my-2 my-lg-0 align-items-middle"
+            data-bs-toggle="modal"
+            data-bs-target="#editProfile"
+          >
+            <img class="createEventBtn" src="https://i.imgur.com/CYu36JW.png" />
+            Edit Profile
+          </button>
+          <Modal id="editProfile">
+            <template #modal-title>Edit Profile</template>
+            <template #modal-body><EditProfile /> </template>
+          </Modal>
+        </p>
       </span>
     </div>
   </nav>

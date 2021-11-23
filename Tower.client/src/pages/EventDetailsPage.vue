@@ -3,7 +3,7 @@
     <div class="col-md-11 bg-light card elevation-1">
       <h3>{{ event.name }}</h3>
       <img
-        class="imgFit eventDetailsCoverImage"
+        class="eventDetailsCoverImage"
         :src="event.coverImg"
         alt="Event cover image"
       />

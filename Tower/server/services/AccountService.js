@@ -53,6 +53,7 @@ class AccountService {
    * @param {any} user
    */
   async getAccount(user) {
+    logger.log(user)
     let account = await dbContext.Account.findOne({
       _id: user.id
     })

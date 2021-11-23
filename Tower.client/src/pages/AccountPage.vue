@@ -8,13 +8,11 @@
   </div>
   <div class="row m-0 justify-content-center">
     <div class="col-md-11 card elevation-2 p-3">
-      <p>EVENT INFORMATION</p>
+      <p>Events you're attending</p>
     </div>
   </div>
   <div class="row m-0 mt-5 justify-content-center justify-content-around">
-    <div class="col-md-2 card elevation-2 p-3" v-for="e in events" :key="e.id">
-      <!-- <Event :event="e" /> -->
-    </div>
+    <div class="col-md-2 card elevation-2 p-3"></div>
   </div>
 </template>
 

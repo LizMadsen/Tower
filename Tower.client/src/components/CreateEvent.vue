@@ -103,16 +103,6 @@
   </form>
 </template>
 
-//NOTE var date = new Date("2021-11-24T00:00:00.000Z")
-undefined
-date 
-Tue Nov 23 2021 17:00:00 GMT-0700 (Mountain Standard Time)
-date.toDateString
-ƒ toDateString() { [native code] }
-date.toDateString()
-'Tue Nov 23 2021'
-^^ Turn into a computed
-
 <script>
 import { watchEffect } from "@vue/runtime-core"
 import { useRoute, useRouter } from "vue-router"
