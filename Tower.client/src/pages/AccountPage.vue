@@ -1,19 +1,38 @@
 <template>
-  <div class="about text-center">
-    <h1>Welcome {{ account.name }}</h1>
-    <img class="rounded" :src="account.picture" alt="" />
-    <p>{{ account.email }}</p>
+  <div class="row m-0">
+    <div class="col-md-11 about text-center">
+      <h1>Welcome {{ account.name }}</h1>
+      <img class="profilePic" :src="account.picture" alt="Profile Picture" />
+      <p>{{ account.email }}</p>
+    </div>
+  </div>
+  <div class="row m-0 justify-content-center">
+    <div class="col-md-11 card elevation-2 p-3">
+      <p>EVENT INFORMATION</p>
+      <p>EVENT INFORMATION</p>
+    </div>
+  </div>
+  <div class="row m-0 mt-5 justify-content-center justify-content-around">
+    <div class="col-md-2 card elevation-2 p-3" v-for="e in events" :key="e.id">
+      <!-- <Event :event="e" /> -->
+    </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
+import { eventService } from "../services/EventService"
 export default {
   name: 'Account',
   setup() {
-    return {
-      account: computed(() => AppState.account)
+    onMounted(async () => {
+      async () => { await eventService.getEventById('creator') };
+    })
+    {
+      return {
+        account: computed(() => AppState.account),
+      }
     }
   }
 }
@@ -22,5 +41,8 @@ export default {
 <style scoped>
 img {
   max-width: 100px;
+}
+.profilePic {
+  border-radius: 50%;
 }
 </style>

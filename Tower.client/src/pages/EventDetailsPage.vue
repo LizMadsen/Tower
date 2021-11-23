@@ -15,7 +15,16 @@
       <p>{{ event.description }}</p>
     </div>
   </div>
-  <div class="row m-0 my-5 justify-content-center">
+  <div class="row m-0 justify-content-center mt-3">
+    <div class="col-8 card elevation-1">
+      <img
+        class="profilePic p-1"
+        :src="attendee.picture"
+        alt="Event cover image"
+      />
+    </div>
+  </div>
+  <div class="row m-0 mt-3 justify-content-center">
     <div class="col-8 card elevation-1">
       <form @submit.prevent="createComment()">
         <textarea
@@ -57,6 +66,7 @@ export default {
       newComment,
       event: computed(() => AppState.activeEvent),
       comments: computed(() => AppState.comments),
+      attendee: computed(() => AppState.account),
       async createComment() {
         try {
           newComment.editable.eventId = this.event.id
@@ -78,5 +88,10 @@ export default {
   object-fit: cover;
   height: 12rem;
   width: 100%;
+}
+.profilePic {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
 }
 </style>
