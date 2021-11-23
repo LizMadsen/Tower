@@ -33,7 +33,7 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
-      <Comment :comments="comments" />
+      <!-- <Comment :comments="comments" /> -->
     </div>
   </div>
 </template>

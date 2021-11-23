@@ -1,7 +1,8 @@
 <template>
   <div v-for="c in comments" :key="c.id">
     <div class="card elevation-1">
-      <!-- <p>{{ account.picture }} {{ account.name }}</p> -->
+      //TODO Fix this to commentCreator
+      <!-- <p>{{ commentCreator.picture }} {{ account.name }}</p> -->
       {{ c.body }}
     </div>
   </div>
