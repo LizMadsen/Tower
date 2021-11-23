@@ -40,7 +40,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// .eventCards {
-//   height: 14rem;
-// }
 </style>

@@ -1,7 +1,13 @@
 <template>
-  <div class="card elevation-2 rounded selectable" @click="linkEvent(event.id)">
-    <img class="imgFit" :src="event.coverImg" alt="Event cover image" />
+  <div class="card elevation-2 rounded">
+    <img
+      @click="linkEvent(event.id)"
+      class="imgFit selectable"
+      :src="event.coverImg"
+      alt="Event cover image"
+    />
     <h3>{{ event.name }}</h3>
+    <button class="btn btn-primary attendBtn">Attend</button>
     <p>
       <b>Capacity:</b> 0/{{ event.capacity }} <br /><b>Start Date:</b>
       {{ event.startDate }} <br /><b>Location</b>: {{ event.location }}
@@ -29,8 +35,8 @@ export default {
         try {
           if (id) {
             router.push({ path: '/eventdetails/' + id })
-            AppState.activeEvent = await eventService.getActiveEvent(id);
-            AppState.comments = await eventService.getCommentsByEvent(id);
+            await eventService.getActiveEvent(id);
+            await eventService.getCommentsByEvent(id);
           }
         } catch (error) {
           logger.log(error)
@@ -44,4 +50,7 @@ export default {
 
 
 <style lang="scss" scoped>
+.attendBtn {
+  width: 6rem;
+}
 </style>

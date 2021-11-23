@@ -1,5 +1,5 @@
 <template>
-  <div class="row m-0 justify-content-center">
+  <div class="row m-0 justify-content-center" v-if="event">
     <div class="col-md-11 bg-light card elevation-1">
       <h3>{{ event.name }}</h3>
       <img
@@ -8,8 +8,8 @@
         alt="Event cover image"
       />
       <p>
-        <b>Capacity:</b> {{ event.capacity }} <br /><b>Start Date:</b>
-        {{ event.startDate }} <br /><b>Location</b>:
+        <b>Capacity:</b> {{ event.capacityRemaining }} / {{ event.capacity }}
+        <br /><b>Start Date:</b> {{ event.startDate }} <br /><b>Location</b>:
         {{ event.location }}
       </p>
       <p>{{ event.description }}</p>
@@ -18,9 +18,12 @@
   <div class="row m-0 justify-content-center mt-3">
     <div class="col-8 card elevation-1">
       <img
+        v-for="a in attendees"
+        :key="a.id"
         class="profilePic p-1"
-        :src="attendee.picture"
+        :src="attendees.picture"
         alt="Event cover image"
+        :title="a.name"
       />
     </div>
   </div>
@@ -42,7 +45,7 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
-      <!-- <Comment :comments="comments" /> -->
+      <Comment :comments="comments" />
     </div>
   </div>
 </template>
@@ -66,7 +69,7 @@ export default {
       newComment,
       event: computed(() => AppState.activeEvent),
       comments: computed(() => AppState.comments),
-      attendee: computed(() => AppState.account),
+      attendees: computed(() => AppState.attendees),
       async createComment() {
         try {
           newComment.editable.eventId = this.event.id
