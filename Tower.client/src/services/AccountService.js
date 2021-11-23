@@ -12,11 +12,10 @@ class AccountService {
     }
   }
 
-  async updateProfile(update){
+  async edit(update){
     try {
       const res = await api.put('/account', update)
       AppState.account = res.data 
-      this.getAccount()
     } catch (error) {
       logger.error('Cannot update profile', 'error')
     }

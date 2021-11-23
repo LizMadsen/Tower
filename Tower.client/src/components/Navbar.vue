@@ -34,12 +34,12 @@
             id="authDropdown"
           >
             <img
-              :src="user.picture"
+              :src="account.picture"
               alt="user photo"
               height="40"
               class="profilePic"
             />
-            <span class="mx-3 text-light">{{ user.name }}</span>
+            <span class="mx-3 text-light">{{ account.name }}</span>
           </div>
           <div
             class="dropdown-menu p-0 list-group w-100"
@@ -75,20 +75,18 @@
           <template #modal-title>Create Event</template>
           <template #modal-body><CreateEvent /> </template>
         </Modal>
-        <p>
-          <button
-            class="btn text-light lighten-30 my-2 my-lg-0 align-items-middle"
-            data-bs-toggle="modal"
-            data-bs-target="#editProfile"
-          >
-            <img class="createEventBtn" src="https://i.imgur.com/CYu36JW.png" />
-            Edit Profile
-          </button>
-          <Modal id="editProfile">
-            <template #modal-title>Edit Profile</template>
-            <template #modal-body><EditProfile /> </template>
-          </Modal>
-        </p>
+        <button
+          class="btn text-light lighten-30 my-2 my-lg-0 align-items-middle"
+          data-bs-toggle="modal"
+          data-bs-target="#editProfile"
+        >
+          <img class="createEventBtn" src="https://i.imgur.com/tccYxoA.png" />
+          Edit Profile
+        </button>
+        <Modal id="editProfile">
+          <template #modal-title>Edit Profile</template>
+          <template #modal-body><EditProfile /> </template>
+        </Modal>
       </span>
     </div>
   </nav>
@@ -101,6 +99,7 @@ import { computed } from 'vue'
 export default {
   setup() {
     return {
+      account: computed(() => AppState.account),
       user: computed(() => AppState.user),
       async login() {
         AuthService.loginWithPopup()

@@ -65,7 +65,7 @@ export default {
       async edit() {
         try {
           await accountService.edit(state.editable)
-          Modal.getOrCreateInstance(document.getElementById('editProfile')).hide;
+          Modal.getOrCreateInstance(document.getElementById('editProfile')).hide();
         } catch (error) {
           logger.log(error)
           Pop.toast("Edit profile did not work", "error")
