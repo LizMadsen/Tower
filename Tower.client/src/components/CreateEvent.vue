@@ -26,24 +26,6 @@
           required
         />
         <input
-          v-model="state.editable.startDate"
-          class="form-control mb-3 justify-content-around d-flex"
-          type="date"
-          name="startDate"
-          id="startDate"
-          placeholder="Start Date"
-          required
-        />
-        <input
-          v-model="state.editable.capacity"
-          class="form-control mb-3 justify-content-around d-flex"
-          type="number"
-          name="capacity"
-          id="capacity"
-          placeholder="Capacity"
-          required
-        />
-        <input
           v-model="state.editable.coverImg"
           class="form-control mb-3 justify-content-around d-flex"
           type="text"
@@ -54,6 +36,60 @@
         />
       </div>
     </div>
+    <div class="d-flex justify-content-around">
+      <input
+        v-model="state.editable.capacity"
+        class="form-control mb-3 justify-content-around d-flex mx-2"
+        type="number"
+        name="capacity"
+        id="capacity"
+        placeholder="Capacity"
+        required
+      />
+      <div>
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle dropdownMenuBtn"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Event Type: {{ state.editable.type }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li v-for="option in options" :key="option">
+              <a
+                class="dropdown-item text-dark"
+                @click="state.editable.type = option"
+                href="javascript:void(0)"
+                >{{ option }}</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <input
+        v-model="state.editable.startDate"
+        class="form-control mb-3 mx-2"
+        type="date"
+        name="startDate"
+        id="startDate"
+        placeholder="Start Date"
+        required
+      />
+    </div>
+    <input
+      v-model="state.editable.location"
+      class="form-control mb-3"
+      type="text"
+      name="location"
+      id="location"
+      placeholder="Event location"
+      min="10"
+      max="250"
+      required
+    />
     <div class="modal-footer">
       <button
         type="button"
@@ -88,9 +124,10 @@ export default {
     })
     return {
       state,
+      options: ['Concert', 'Convention', 'Sport', 'Digital'],
       async createEvent() {
         try {
-          logger.log("test")
+          logger.log(state.editable)
           await eventService.createEvent(state.editable)
           Modal.getOrCreateInstance(document.getElementById('CreateEvent')).hide();
         } catch (error) {
@@ -105,4 +142,7 @@ export default {
 
 
 <style lang="scss" scoped>
+.dropdownMenuBtn {
+  width: 13rem;
+}
 </style>

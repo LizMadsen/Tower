@@ -1,7 +1,12 @@
 <template>
-  <div class="elevation-2 rounded" v-for="e in events" :key="e.id">
-    {{ e.name }}
-    {{ e.description }}
+  <div class="card elevation-2 rounded selectable" @click="linkEvent(event.id)">
+    <img class="imgFit" :src="event.coverImg" alt="Event cover image" />
+    <h3>{{ event.name }}</h3>
+    <p>
+      <b>Capacity:</b> {{ event.capacity }} <br /><b>Start Date:</b>
+      {{ event.startDate }} <br /><b>Location</b>: {{ event.location }}
+    </p>
+    <p>{{ event.description }}</p>
   </div>
 </template>
 
@@ -14,7 +19,8 @@ import { eventService } from '../services/EventService'
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 export default {
-  setup() {
+  props: { event: { type: Object, required: true } },
+  setup(props) {
     const router = useRouter();
     async () => { await eventService.getAll() };
     return {
@@ -22,7 +28,7 @@ export default {
       async linkEvent(id) {
         try {
           if (id) {
-            router.push({ path: '/events/' + id })
+            router.push({ path: '/eventdetailspage/' + id })
             AppState.activeEvent = id
           }
         } catch (error) {
