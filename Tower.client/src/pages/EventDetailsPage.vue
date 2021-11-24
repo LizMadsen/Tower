@@ -117,7 +117,6 @@ export default {
       editable: {},
     })
     onMounted(async () => {
-      //await eventService.getCommentsByEvent(AppState.activeEvent.id)
     })
     return {
       newComment,
