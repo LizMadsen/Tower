@@ -9,14 +9,11 @@ export class AttendeeController extends BaseController {
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.attendEvent)
-      .delete('/:attendeeId', this.removeAttendee)
+      .delete('/:attendeeId', this.unattend)
   }
 
   async attendEvent(req, res, next) {
     try {
-      // req.body.accountId = req.userInfo.id
-      // req.body.eventId = req.body.id
-      logger.log(req.body)
       const attended = await attendeeService.attendEvent(req.body)
       return res.send(attended)
     } catch (error) {
@@ -24,11 +21,11 @@ export class AttendeeController extends BaseController {
     }
   }
 
-  async removeAttendee(req, res, next) {
+  async unattend(req, res, next) {
     try {
       const userId = req.userInfo.id
       const attendeeId = req.params.attendeeId
-      await attendeeService.removeAttendee(attendeeId, userId)
+      await attendeeService.unattend(attendeeId, userId)
       res.send('Attendee has been removed')
     } catch (error) {
       next(error)

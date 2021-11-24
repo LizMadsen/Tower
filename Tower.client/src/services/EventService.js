@@ -37,7 +37,13 @@ class EventService{
     logger.log(attendee)
     const res = await api.post('api/attendees', attendee)
     AppState.attendees.push(res.data)
+  }
 
+  async unattend(attendee){
+    const attendeeRecord = AppState.attendees.find(a=> a.eventId == attendee.eventId && a.accountId == attendee.accountId)
+    logger.log(attendeeRecord)
+    const res = await api.delete(`api/attendees/${attendeeRecord.id}`)
+    AppState.attendees = AppState.attendees.filter(a=>a.id != attendeeRecord.id)
   }
 
   async createComment(comment){

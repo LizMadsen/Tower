@@ -5,7 +5,11 @@
         {{ event.name }}
         <button
           class="btn"
-          v-if="event.creatorId == account.id && !event.isCanceled"
+          v-if="
+            event.creatorId == account.id &&
+            !event.isCanceled &&
+            event.capacity != attendees.length
+          "
           @click="cancelEvent()"
           :title="'Cancel event'"
         >
@@ -30,6 +34,11 @@
         :src="event.coverImg"
         alt="Event cover image"
       />
+      <div>
+        <h2 class="text-danger" v-if="event.capacity == attendees.length">
+          <b>SOLD OUT</b>
+        </h2>
+      </div>
       <p>
         <b>Seats Taken:</b> {{ attendees.length }} / {{ event.capacity }}
         <br />
@@ -50,8 +59,8 @@
         </button>
         <button
           class="btn btn-secondary"
-          disabled
           v-if="!event.isCanceled && amAttending"
+          @click="unattend()"
         >
           Unattend
         </button>
@@ -116,13 +125,23 @@ export default {
       comments: computed(() => AppState.comments),
       attendees: computed(() => AppState.attendees),
       account: computed(() => AppState.account),
-      amAttending: computed(() => AppState.attendees.some(a => a.accountId == this.account.id && a.eventId == this.event.id)),
+      amAttending: computed(() => AppState.attendees.some(
+        a => a.accountId == AppState.account.id && a.eventId == AppState.activeEvent.id)
+      ),
       async isAttending() {
         try {
           await eventService.attendEvent({ eventId: this.event.id, accountId: this.account.id })
         } catch (error) {
           logger.log(error)
           Pop.toast("Attend event did not work", "error")
+        }
+      },
+      async unattend() {
+        try {
+          await eventService.unattend({ eventId: this.event.id, accountId: this.account.id })
+        } catch (error) {
+          logger.log(error)
+          Pop.toast("Unattend event did not work", "error")
         }
       },
       async cancelEvent() {

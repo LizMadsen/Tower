@@ -23,7 +23,7 @@ class AttendeeService {
     return attendee
   }
 
-  async removeAttendee(attendeeId, userId) {
+  async unattend(attendeeId, userId) {
     const found = await dbContext.Attendee.findById(attendeeId)
     if (found.accountId.toString() !== userId) {
       throw new Forbidden('invalid entry')
