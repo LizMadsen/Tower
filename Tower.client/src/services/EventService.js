@@ -21,6 +21,11 @@ class EventService{
     AppState.activeEvent = res.data
   }
 
+  async editEvent(event){
+    const res = await api.put(`api/events/${id}`, event)
+    AppState.activeEvent = res.data
+  }
+
   async createComment(comment){
     const res = await api.post('api/comments/', comment)
     AppState.comments.push(res.data)

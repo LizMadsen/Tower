@@ -51,7 +51,7 @@ class TowerEventService {
   async cancelEvent(id, update) {
     const Event = await this.getEventById(id)
     if (Event.creatorId.toString() !== update.creatorId) {
-      throw new Forbidden('na')
+      throw new Forbidden('Nah')
     }
     const newEvent = await dbContext.TowerEvent.findByIdAndUpdate(id, update, { new: true })
 

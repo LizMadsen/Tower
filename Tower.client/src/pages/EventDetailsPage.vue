@@ -3,16 +3,26 @@
     <div class="col-md-11 bg-light card elevation-1">
       <h3>
         {{ event.name }}
-        <!-- <button
+        <button
           class="btn"
           v-if="event.creatorId == account.id"
           @click="cancelEvent(event.id)"
         >
-          <img
-            class="trashCan cancelEventBtn"
-            src="https://i.imgur.com/SHjFXfJ.png"
-          />
-        </button> -->
+          <img class="cancelEventBtn" src="https://i.imgur.com/SHjFXfJ.png" />
+        </button>
+        <button
+          data-bs-toggle="modal"
+          data-bs-target="#editEvent"
+          class="btn"
+          v-if="event.creatorId == account.id"
+          @click="editEvent(event.id)"
+        >
+          <img class="cancelEventBtn" src="https://i.imgur.com/tccYxoA.png" />
+        </button>
+        <Modal id="editEvent">
+          <template #modal-title>Edit Event</template>
+          <template #modal-body><EditEvent /></template>
+        </Modal>
       </h3>
       <img
         class="eventDetailsCoverImage"

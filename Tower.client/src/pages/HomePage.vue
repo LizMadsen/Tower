@@ -1,9 +1,9 @@
 <template>
-  <div class="row m-0 justify-content-center">
+  <!-- <div class="row m-0 justify-content-center">
     <div class="col-md-12 my-3 card p-5 rounded elevation-3">
-      <!-- <Event /> -->
+      <Event :event="event[6]" />
     </div>
-  </div>
+  </div> -->
   <div class="row m-0 justify-content-center">
     <div class="col-md-12 my-3 card p-1 bg-light rounded elevation-3">
       <Navigation @filterEvent="filterEvents($event)" />

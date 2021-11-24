@@ -71,14 +71,6 @@ export default {
           Pop.toast("Edit profile did not work", "error")
         }
       },
-      async edit() {
-        try {
-          await accountService.edit(state.editable);
-        } catch (error) {
-          logger.error(error);
-          Pop.toast('Error')
-        }
-      }
     }
   }
 }
