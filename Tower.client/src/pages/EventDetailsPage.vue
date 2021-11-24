@@ -2,6 +2,12 @@
   <div class="row m-0 justify-content-center" v-if="event">
     <div class="col-md-11 bg-light card elevation-1">
       <h3>{{ event.name }}</h3>
+      <button class="btn">
+        <img
+          class="trashCan selectable cancelEventBtn"
+          src="https://i.imgur.com/SHjFXfJ.png"
+        />
+      </button>
       <img
         class="eventDetailsCoverImage"
         :src="event.coverImg"
@@ -9,7 +15,10 @@
       />
       <p>
         <b>Capacity:</b> {{ event.capacityRemaining }} / {{ event.capacity }}
-        <br /><b>Start Date:</b> {{ event.startDate }} <br /><b>Location</b>:
+        <br />
+        <b>Start Date:</b> {{ event.startDate.substring(0, 10) }}
+        <br />
+        <b>Location</b>:
         {{ event.location }}
       </p>
       <p>{{ event.description }}</p>
@@ -21,14 +30,14 @@
         v-for="a in attendees"
         :key="a.id"
         class="profilePic p-1"
-        :src="attendees.picture"
+        :src="a.account.picture"
         alt="Event cover image"
-        :title="a.name"
+        :title="a.account.name"
       />
     </div>
   </div>
   <div class="row m-0 mt-3 justify-content-center">
-    <div class="col-8 card elevation-1">
+    <div class="col-8 mb-3 card elevation-1">
       <form @submit.prevent="createComment()">
         <textarea
           v-model="newComment.editable.body"
@@ -75,6 +84,7 @@ export default {
           newComment.editable.eventId = this.event.id
           newComment.editable.accountId = AppState.account.id
           await eventService.createComment(newComment.editable)
+          newComment.editable.body = ""
         } catch (error) {
           logger.log(error)
           Pop.toast("Create comment did not work", 'error')
@@ -96,5 +106,8 @@ export default {
   height: 50px;
   width: 50px;
   border-radius: 50%;
+}
+.cancelEventBtn {
+  height: 30px;
 }
 </style>

@@ -31,9 +31,15 @@ class EventService{
     AppState.comments = res.data
   }
 
+  async getAttendeesByEvent(id){
+    const res = await api.get(`api/events/${id}/attendees`)
+    logger.log(res.data)
+    AppState.attendees = res.data
+  }
+
   async removeComment(id){
-    const res = await api.delete(`api/events/${id}/comments`)
-    AppState.comments = res.data
+    const res = await api.delete(`api/comments/${id}`)
+    AppState.comments = AppState.comments.filter(c=>c.id != id)
   }
 
 }

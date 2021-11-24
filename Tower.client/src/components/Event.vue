@@ -37,6 +37,7 @@ export default {
             router.push({ path: '/eventdetails/' + id })
             await eventService.getActiveEvent(id);
             await eventService.getCommentsByEvent(id);
+            await eventService.getAttendeesByEvent(id);
           }
         } catch (error) {
           logger.log(error)

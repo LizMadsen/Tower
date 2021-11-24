@@ -9,13 +9,13 @@
       {{ c.creator.name }}
       <br />
       {{ c.body }}
-      <!-- <button
+      <button
         class="btn"
-        v-if="c.creatorId == attendee.id"
+        v-if="c.creatorId == account.id"
         @click="deleteComment(c.id)"
       >
         <img class="trashCan" src="https://i.imgur.com/SHjFXfJ.png" />
-      </button> -->
+      </button>
     </div>
   </div>
 </template>
@@ -35,11 +35,10 @@ export default {
   setup(props) {
     return {
       creator: computed(() => AppState.attendees),
-      async deleteComment(eventId) {
+      account: computed(() => AppState.account),
+      async deleteComment(id) {
         try {
-          if (eventId) {
-            await eventService.removeComment(eventId)
-          }
+          await eventService.removeComment(id)
         } catch (error) {
           logger.log(error)
           Pop.toast("Delete comment is not working", "Error")
