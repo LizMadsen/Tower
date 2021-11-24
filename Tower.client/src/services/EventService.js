@@ -10,6 +10,13 @@ class EventService{
     logger.log(res.data)
     AppState.events = res.data
   }
+
+  async getAllEventsByAccountId(id){
+    logger.log(id)
+    const res = await api.get(`/api/events/${id}/events`)
+    logger.log(res.data)
+    AppState.attendees = res.data
+  }
   async getActiveEvent(id){
    const res = await api.get(`api/events/${id}`)
     AppState.activeEvent = res.data

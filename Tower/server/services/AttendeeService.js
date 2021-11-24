@@ -1,6 +1,6 @@
 import { dbContext } from '../db/DbContext'
 import { BadRequest, Forbidden } from '../utils/Errors'
-import { towerEventService } from './TowerEventService'
+import { logger } from '../utils/Logger'
 
 class AttendeeService {
   async attendEvent(body) {
@@ -13,6 +13,11 @@ class AttendeeService {
     const events = await dbContext.Attendee.find(query)
       .populate('account event')
     return events
+  }
+
+  async getAllAttendees(query = {}) {
+    logger.log('test')
+    return await dbContext.Attendee.find(query)
   }
 
   async getAttendeesById(id) {

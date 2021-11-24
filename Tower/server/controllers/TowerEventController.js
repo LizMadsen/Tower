@@ -13,6 +13,7 @@ export class TowerEventController extends BaseController {
       .get('/:eventId', this.getEventById)
       .get('/:eventId/comments', this.getCommentsByEvent)
       .get('/:eventId/attendees', this.getAttendeesByEvent)
+      .get('/:accountId/events', this.getEventsByAccountId)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createEvent)
       .put('/:eventId', this.editEvent)
@@ -41,6 +42,15 @@ export class TowerEventController extends BaseController {
   async getAttendeesByEvent(req, res, next) {
     try {
       const events = await attendeeService.getEventAttendance({ eventId: req.params.eventId })
+      return res.send(events)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getEventsByAccountId(req, res, next) {
+    try {
+      const events = await attendeeService.getEventAttendance({ accountId: req.params.accountId })
       return res.send(events)
     } catch (error) {
       next(error)

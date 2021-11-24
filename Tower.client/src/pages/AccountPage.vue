@@ -15,7 +15,7 @@
       <button
         class="btn btn-secondary"
         v-if="amAttending(e)"
-        @click="unattend()"
+        @click.prevent="unattend(e)"
       >
         Unattend
       </button>
@@ -29,30 +29,32 @@ import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { eventService } from "../services/EventService"
 import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
 export default {
   name: 'Account',
   setup() {
     //let myEventIds = AppState.attendees.filter(a => a.event. == AppState.account.id)
     onMounted(async () => {
       await eventService.getAllEvents()
+      await eventService.getAllEventsByAccountId(AppState.account.id)
     })
     {
       return {
         account: computed(() => AppState.account),
-        //attendees: computer(() => AppState.attendees),
-        events: computed(() => AppState.events.filter(e => AppState.attendees.filter(a => a.eventId == e.id))),
+        attendees: computed(() => AppState.attendees),
+        events: computed(() => AppState.events.filter(e => AppState.attendees.some(a => a.eventId == e.id))),
         amAttending(event) {
-          logger.log(event.id)
+          //logger.log(event.id)
           let attending = AppState.attendees.some(a => a.eventId == event.id && a.accountId == AppState.account.id)
-          logger.log(attending)
+          //logger.log(attending)
           return attending
         },
         // amAttending: computed(() => AppState.attendees.some(
         //   a => a.accountId == AppState.account.id)
         // ),
-        async unattend() {
+        async unattend(event) {
           try {
-            await eventService.unattend({ eventId: this.event.id, accountId: this.account.id })
+            await eventService.unattend({ eventId: event.id, accountId: this.account.id })
           } catch (error) {
             logger.log(error)
             Pop.toast("Unattend event did not work", "error")

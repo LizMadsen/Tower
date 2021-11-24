@@ -7,10 +7,23 @@ export class AttendeeController extends BaseController {
   constructor() {
     super('/api/attendees')
     this.router
+      // .get('', this.getEventAttendance)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.attendEvent)
       .delete('/:attendeeId', this.unattend)
   }
+
+  // async getEventAttendance(req, res, next) {
+  //   try {
+  //     const query = req.query
+  //     logger.log(query)
+  //     const Attendees = await attendeeService.getEventAttendance(query)
+  //     logger.log(Attendees)
+  //     res.send(Attendees)
+  //   } catch (error) {
+  //     next(error)
+  //   }
+  // }
 
   async attendEvent(req, res, next) {
     try {
