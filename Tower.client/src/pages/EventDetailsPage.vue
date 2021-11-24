@@ -15,7 +15,6 @@
           data-bs-target="#editEvent"
           class="btn"
           v-if="event.creatorId == account.id"
-          @click="editEvent(event.id)"
         >
           <img class="cancelEventBtn" src="https://i.imgur.com/tccYxoA.png" />
         </button>

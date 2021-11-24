@@ -21,7 +21,7 @@ class EventService{
     AppState.activeEvent = res.data
   }
 
-  async editEvent(event){
+  async editEvent(id, event){
     const res = await api.put(`api/events/${id}`, event)
     AppState.activeEvent = res.data
   }

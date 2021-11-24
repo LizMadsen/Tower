@@ -135,14 +135,15 @@ export default {
     });
     return {
       state,
+      options: ['concert', 'convention', 'sport', 'digital'],
       activeEvent: computed(() => AppState.activeEvent),
       async edit() {
         try {
-          await eventService.edit(state.editable)
+          await eventService.editEvent(this.activeEvent.id, state.editable)
           Modal.getOrCreateInstance(document.getElementById('editEvent')).hide();
         } catch (error) {
           logger.log(error)
-          Pop.toast("Edit even did not work", "error")
+          Pop.toast("Edit event did not work", "error")
         }
       },
     }
