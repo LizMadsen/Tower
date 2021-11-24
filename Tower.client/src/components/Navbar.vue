@@ -80,7 +80,7 @@
           data-bs-toggle="modal"
           data-bs-target="#editProfile"
         >
-          <img class="createEventBtn" src="https://i.imgur.com/tccYxoA.png" />
+          <img class="editProfileBtn" src="https://i.imgur.com/tccYxoA.png" />
           Edit Profile
         </button>
         <Modal id="editProfile">
@@ -137,7 +137,7 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 .createEventBtn {
-  height: 50px;
+  height: 35px;
 }
 .towerLogo {
   height: 75px;
@@ -147,5 +147,9 @@ a:hover {
 }
 .profilePic {
   border-radius: 50%;
+  object-fit: cover;
+}
+.editProfileBtn {
+  height: 30px;
 }
 </style>

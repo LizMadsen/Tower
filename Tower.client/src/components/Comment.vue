@@ -1,6 +1,6 @@
 <template>
   <div v-for="c in comments" :key="c.id">
-    <div class="card p-2 my-1 d-flex flex-row" v-if="comments">
+    <div class="card p-2 my-1 d-flex flex-row">
       <img
         class="profilePic"
         :src="c.creator.picture"
@@ -11,7 +11,7 @@
       {{ c.body }}
       <!-- <button
         class="btn"
-        v-if="c.creatorId == account.id"
+        v-if="c.creatorId == attendee.id"
         @click="deleteComment(c.id)"
       >
         <img class="trashCan" src="https://i.imgur.com/SHjFXfJ.png" />
@@ -25,6 +25,8 @@
 import { computed } from "@vue/reactivity"
 import { AppState } from "../AppState"
 import { eventService } from "../services/EventService"
+import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
 
 export default {
   props: {
@@ -33,13 +35,14 @@ export default {
   setup(props) {
     return {
       creator: computed(() => AppState.attendees),
-      async deleteComment(commentId) {
+      async deleteComment(eventId) {
         try {
-          if (commentId) {
-            await eventService.removeComment
+          if (eventId) {
+            await eventService.removeComment(eventId)
           }
         } catch (error) {
-
+          logger.log(error)
+          Pop.toast("Delete comment is not working", "Error")
         }
       }
     }
