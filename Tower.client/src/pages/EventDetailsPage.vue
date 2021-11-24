@@ -1,13 +1,19 @@
 <template>
   <div class="row m-0 justify-content-center" v-if="event">
     <div class="col-md-11 bg-light card elevation-1">
-      <h3>{{ event.name }}</h3>
-      <button class="btn">
-        <img
-          class="trashCan selectable cancelEventBtn"
-          src="https://i.imgur.com/SHjFXfJ.png"
-        />
-      </button>
+      <h3>
+        {{ event.name }}
+        <!-- <button
+          class="btn"
+          v-if="event.creatorId == account.id"
+          @click="cancelEvent(event.id)"
+        >
+          <img
+            class="trashCan cancelEventBtn"
+            src="https://i.imgur.com/SHjFXfJ.png"
+          />
+        </button> -->
+      </h3>
       <img
         class="eventDetailsCoverImage"
         :src="event.coverImg"
@@ -79,6 +85,7 @@ export default {
       event: computed(() => AppState.activeEvent),
       comments: computed(() => AppState.comments),
       attendees: computed(() => AppState.attendees),
+      account: computed(() => AppState.account),
       async createComment() {
         try {
           newComment.editable.eventId = this.event.id
@@ -108,6 +115,6 @@ export default {
   border-radius: 50%;
 }
 .cancelEventBtn {
-  height: 30px;
+  height: 25px;
 }
 </style>
