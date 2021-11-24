@@ -26,6 +26,20 @@ class EventService{
     AppState.activeEvent = res.data
   }
 
+  async cancelEvent(event){
+    logger.log(event)
+    const res = await api.put(`api/events/${event.id}`, event)
+    logger.log(res.data)
+    AppState.activeEvent = res.data
+  }
+
+  async attendEvent(attendee){
+    logger.log(attendee)
+    const res = await api.post('api/attendees', attendee)
+    AppState.attendees.push(res.data)
+
+  }
+
   async createComment(comment){
     const res = await api.post('api/comments/', comment)
     AppState.comments.push(res.data)

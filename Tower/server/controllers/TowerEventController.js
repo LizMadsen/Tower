@@ -3,6 +3,7 @@ import { towerEventService } from '../services/TowerEventService'
 import BaseController from '../utils/BaseController'
 import { attendeeService } from '../services/AttendeeService'
 import { commentService } from '../services/CommentService'
+import { logger } from '../utils/Logger'
 
 export class TowerEventController extends BaseController {
   constructor() {

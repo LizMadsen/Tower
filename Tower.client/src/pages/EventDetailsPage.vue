@@ -5,16 +5,18 @@
         {{ event.name }}
         <button
           class="btn"
-          v-if="event.creatorId == account.id"
-          @click="cancelEvent(event.id)"
+          v-if="event.creatorId == account.id && !event.isCanceled"
+          @click="cancelEvent()"
+          :title="'Cancel event'"
         >
-          <img class="cancelEventBtn" src="https://i.imgur.com/SHjFXfJ.png" />
+          <img class="cancelEventBtn" src="https://i.imgur.com/tf5eRvQ.png" />
         </button>
         <button
           data-bs-toggle="modal"
           data-bs-target="#editEvent"
           class="btn"
-          v-if="event.creatorId == account.id"
+          :title="'Edit event'"
+          v-if="event.creatorId == account.id && !event.isCanceled"
         >
           <img class="cancelEventBtn" src="https://i.imgur.com/tccYxoA.png" />
         </button>
@@ -29,13 +31,32 @@
         alt="Event cover image"
       />
       <p>
-        <b>Capacity:</b> {{ event.capacityRemaining }} / {{ event.capacity }}
+        <b>Seats Taken:</b> {{ attendees.length }} / {{ event.capacity }}
         <br />
         <b>Start Date:</b> {{ event.startDate.substring(0, 10) }}
         <br />
         <b>Location</b>:
         {{ event.location }}
+        <br />
+        <button
+          class="btn btn-primary"
+          v-if="!event.isCanceled && !amAttending"
+          @click="isAttending()"
+        >
+          Attend
+        </button>
+        <button class="btn btn-danger" disabled v-if="event.isCanceled">
+          CANCELED
+        </button>
+        <button
+          class="btn btn-secondary"
+          disabled
+          v-if="!event.isCanceled && amAttending"
+        >
+          Unattend
+        </button>
       </p>
+
       <p>{{ event.description }}</p>
     </div>
   </div>
@@ -95,6 +116,24 @@ export default {
       comments: computed(() => AppState.comments),
       attendees: computed(() => AppState.attendees),
       account: computed(() => AppState.account),
+      amAttending: computed(() => AppState.attendees.some(a => a.accountId == this.account.id && a.eventId == this.event.id)),
+      async isAttending() {
+        try {
+          await eventService.attendEvent({ eventId: this.event.id, accountId: this.account.id })
+        } catch (error) {
+          logger.log(error)
+          Pop.toast("Attend event did not work", "error")
+        }
+      },
+      async cancelEvent() {
+        try {
+          this.event.isCanceled = true
+          await eventService.cancelEvent(this.event)
+        } catch (error) {
+          logger.log(error)
+          Pop.toast("Cancel event did not work", "error")
+        }
+      },
       async createComment() {
         try {
           newComment.editable.eventId = this.event.id

@@ -8,6 +8,12 @@ class TowerEventService {
     return newEvent
   }
 
+  async attendEvent(body) {
+    const newAttendee = await dbContext.Attendee.create(body)
+    await newAttendee.populate('creator')
+    return newAttendee
+  }
+
   async getAllEvents(query = {}) {
     return await dbContext.TowerEvent.find(query).populate('creator')
   }
@@ -18,23 +24,6 @@ class TowerEventService {
       throw new BadRequest('Invalid ID')
     }
     return Event
-  }
-
-  async capacity(id) {
-    const update = await dbContext.TowerEvent.findById(id)
-    if (update.capacity <= 0) {
-      throw new BadRequest('This event is at capacity')
-    }
-    update.capacity--
-    const updated = await dbContext.TowerEvent.findByIdAndUpdate(id, update, { new: true })
-    return updated
-  }
-
-  async capacitydown(id) {
-    const update = await dbContext.TowerEvent.findById(id)
-    update.capacity++
-    const updated = await dbContext.TowerEvent.findByIdAndUpdate(id, update, { new: true })
-    return updated
   }
 
   async editEvent(body) {

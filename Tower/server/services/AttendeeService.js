@@ -6,7 +6,6 @@ class AttendeeService {
   async attendEvent(body) {
     const attend = await dbContext.Attendee.create(body)
     await attend.populate('account event')
-    await towerEventService.capacity(body.eventId)
     return attend
   }
 
@@ -30,7 +29,6 @@ class AttendeeService {
       throw new Forbidden('invalid entry')
     }
     await dbContext.Attendee.findByIdAndDelete(attendeeId)
-    await towerEventService.capacitydown(found.eventId)
   }
 
   async getMyAttendance(query = {}) {

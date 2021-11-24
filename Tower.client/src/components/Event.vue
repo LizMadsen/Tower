@@ -7,10 +7,11 @@
       alt="Event cover image"
     />
     <h3>{{ event.name }}</h3>
-    <button class="btn btn-primary attendBtn">Attend</button>
     <p>
-      <b>Capacity:</b> 0/{{ event.capacity }} <br /><b>Start Date:</b>
-      {{ event.startDate }} <br /><b>Location</b>: {{ event.location }}
+      <b>Start Date:</b> {{ event.startDate.substring(0, 10) }} <br /><b
+        >Location</b
+      >:
+      {{ event.location }}
     </p>
     <p>{{ event.description }}</p>
   </div>
