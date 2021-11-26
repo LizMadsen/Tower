@@ -71,7 +71,7 @@
     </div>
   </div>
   <div class="row m-0 justify-content-center mt-3">
-    <div class="col-8 card elevation-1">
+    <div class="col-8 card elevation-1 attendeesCard">
       <span>
         <img
           v-for="a in attendees"
@@ -190,5 +190,8 @@ export default {
 }
 .cancelEventBtn {
   height: 25px;
+}
+.attendeesCard {
+  height: 3rem;
 }
 </style>

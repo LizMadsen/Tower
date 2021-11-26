@@ -6,14 +6,13 @@
       :src="event.coverImg"
       alt="Event cover image"
     />
-    <h3>{{ event.name }}</h3>
+    <h3 class="px-3">{{ event.name }}</h3>
     <p>
-      <b>Start Date:</b> {{ event.startDate.substring(0, 10) }} <br /><b
-        >Location</b
-      >:
+      <b class="px-3">Start Date:</b> {{ event.startDate.substring(0, 10) }}
+      <br /><b class="px-3">Location</b>:
       {{ event.location }}
     </p>
-    <p>{{ event.description }}</p>
+    <p class="px-3">{{ event.description }}</p>
   </div>
 </template>
 
