@@ -129,7 +129,6 @@ export default {
       options: ['concert', 'convention', 'sport', 'digital'],
       async createEvent() {
         try {
-          logger.log(state.editable)
           await eventService.createEvent(state.editable)
           Modal.getOrCreateInstance(document.getElementById('createEvent')).hide();
           router.push({ name: 'EventDetails', params: { id: AppState.activeEvent.id } })
