@@ -149,12 +149,15 @@ export default {
         }
       },
       async cancelEvent() {
-        try {
-          await eventService.cancelEvent(this.event.id)
-          await eventService.getActiveEvent(this.event.id);
-        } catch (error) {
-          logger.log(error)
-          Pop.toast("Cancel event did not work", "error")
+        let result = window.confirm("Are you sure you want to cancel this event?")
+        if (result) {
+          try {
+            await eventService.cancelEvent(this.event.id)
+            await eventService.getActiveEvent(this.event.id);
+          } catch (error) {
+            logger.log(error)
+            Pop.toast("Cancel event did not work", "error")
+          }
         }
       },
       async createComment() {

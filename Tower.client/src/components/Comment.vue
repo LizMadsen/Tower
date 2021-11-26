@@ -37,11 +37,14 @@ export default {
       creator: computed(() => AppState.attendees),
       account: computed(() => AppState.account),
       async deleteComment(id) {
-        try {
-          await eventService.removeComment(id)
-        } catch (error) {
-          logger.log(error)
-          Pop.toast("Delete comment is not working", "Error")
+        let result = window.confirm("Are you sure you want to delete your comment?")
+        if (result) {
+          try {
+            await eventService.removeComment(id)
+          } catch (error) {
+            logger.log(error)
+            Pop.toast("Delete comment is not working", "Error")
+          }
         }
       }
     }
