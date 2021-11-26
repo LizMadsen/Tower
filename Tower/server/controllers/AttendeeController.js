@@ -1,29 +1,15 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import { attendeeService } from '../services/AttendeeService'
 import BaseController from '../utils/BaseController'
-import { logger } from '../utils/Logger'
 
 export class AttendeeController extends BaseController {
   constructor() {
     super('/api/attendees')
     this.router
-      // .get('', this.getEventAttendance)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.attendEvent)
-      .delete('/:attendeeId', this.unattend)
+      .delete('/:attendeeId', this.unattendEvent)
   }
-
-  // async getEventAttendance(req, res, next) {
-  //   try {
-  //     const query = req.query
-  //     logger.log(query)
-  //     const Attendees = await attendeeService.getEventAttendance(query)
-  //     logger.log(Attendees)
-  //     res.send(Attendees)
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
 
   async attendEvent(req, res, next) {
     try {
@@ -34,11 +20,11 @@ export class AttendeeController extends BaseController {
     }
   }
 
-  async unattend(req, res, next) {
+  async unattendEvent(req, res, next) {
     try {
       const userId = req.userInfo.id
-      const attendeeId = req.params.attendeeId
-      await attendeeService.unattend(attendeeId, userId)
+      const attendeeRecordId = req.params.attendeeId
+      await attendeeService.unattendEvent(attendeeRecordId, userId)
       res.send('Attendee has been removed')
     } catch (error) {
       next(error)

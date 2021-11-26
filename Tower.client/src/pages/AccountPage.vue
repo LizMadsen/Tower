@@ -12,11 +12,7 @@
       v-for="e in events"
       :key="e.id"
     >
-      <button
-        class="btn btn-secondary"
-        v-if="amAttending(e)"
-        @click.prevent="unattend(e)"
-      >
+      <button class="btn btn-secondary" @click.prevent="unattend(e)">
         Unattend
       </button>
       <Event :event="e" />
@@ -27,34 +23,26 @@
 <script>
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
+import { accountService } from "../services/AccountService"
 import { eventService } from "../services/EventService"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 export default {
   name: 'Account',
   setup() {
-    //let myEventIds = AppState.attendees.filter(a => a.event. == AppState.account.id)
     onMounted(async () => {
-      await eventService.getAllEvents()
-      await eventService.getAllEventsByAccountId(AppState.account.id)
+      await accountService.getAccountAttendees(AppState.account.id)
     })
     {
       return {
         account: computed(() => AppState.account),
         attendees: computed(() => AppState.attendees),
-        events: computed(() => AppState.events.filter(e => AppState.attendees.some(a => a.eventId == e.id))),
-        amAttending(event) {
-          //logger.log(event.id)
-          let attending = AppState.attendees.some(a => a.eventId == event.id && a.accountId == AppState.account.id)
-          //logger.log(attending)
-          return attending
-        },
-        // amAttending: computed(() => AppState.attendees.some(
-        //   a => a.accountId == AppState.account.id)
-        // ),
+        events: computed(() => AppState.events.filter(
+          e => AppState.attendees.some(a => a.eventId == e.id))
+        ),
         async unattend(event) {
           try {
-            await eventService.unattend({ eventId: event.id, accountId: this.account.id })
+            await eventService.unattendEvent({ eventId: event.id, accountId: this.account.id })
           } catch (error) {
             logger.log(error)
             Pop.toast("Unattend event did not work", "error")

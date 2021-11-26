@@ -1,6 +1,6 @@
 <template>
   <div v-for="c in comments" :key="c.id">
-    <div class="card p-2 my-1 d-flex flex-row">
+    <div class="card p-2 my-1 d-flex flex-row mb-2">
       <img
         class="profilePic"
         :src="c.creator.picture"
@@ -10,7 +10,7 @@
       <br />
       {{ c.body }}
       <button
-        class="btn"
+        class="btn align-self-end"
         v-if="c.creatorId == account.id"
         @click="deleteComment(c.id)"
       >

@@ -1,7 +1,7 @@
 <template>
   <div class="row m-0 justify-content-center" v-if="event">
     <div class="col-md-11 bg-light card elevation-1">
-      <h3>
+      <h3 class="p-2">
         {{ event.name }}
         <button
           class="btn"
@@ -30,27 +30,28 @@
         </Modal>
       </h3>
       <img
-        class="eventDetailsCoverImage"
+        class="eventDetailsCoverImage px-2"
         :src="event.coverImg"
         alt="Event cover image"
       />
       <div>
-        <h2 class="text-danger" v-if="event.capacity == attendees.length">
+        <h2 class="text-danger p-2" v-if="!event.capacity && !event.IsCanceled">
           <b>SOLD OUT</b>
         </h2>
       </div>
-      <p>
-        <b>Seats Taken:</b> {{ attendees.length }} / {{ event.capacity }}
+      <p class="px-2">
+        <b>Spots left:</b> {{ event.capacity }}
         <br />
         <b>Start Date:</b> {{ event.startDate.substring(0, 10) }}
         <br />
-        <b>Location</b>:
-        {{ event.location }}
-        <br />
+        <b>Location</b>: {{ event.location }}
+      </p>
+
+      <p class="px-2">
         <button
           class="btn btn-primary"
-          v-if="!event.isCanceled && !amAttending"
-          @click="isAttending()"
+          v-if="!event.isCanceled && !amAttending && event.capacity"
+          @click="attend()"
         >
           Attend
         </button>
@@ -66,19 +67,21 @@
         </button>
       </p>
 
-      <p>{{ event.description }}</p>
+      <p class="px-2">{{ event.description }}</p>
     </div>
   </div>
   <div class="row m-0 justify-content-center mt-3">
     <div class="col-8 card elevation-1">
-      <img
-        v-for="a in attendees"
-        :key="a.id"
-        class="profilePic p-1"
-        :src="a.account.picture"
-        alt="Event cover image"
-        :title="a.account.name"
-      />
+      <span>
+        <img
+          v-for="a in attendees"
+          :key="a.id"
+          class="profilePic p-1"
+          :src="a.account.picture"
+          alt="Event cover image"
+          :title="a.account.name"
+        />
+      </span>
     </div>
   </div>
   <div class="row m-0 mt-3 justify-content-center">
@@ -95,18 +98,20 @@
           max="250"
           required
         />
-        <div class="text-end mt-2">
+        <div class="text-end mt-2 mb-2">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
-      <Comment :comments="comments" />
+      <div class="mb-2">
+        <Comment :comments="comments" />
+      </div>
     </div>
   </div>
 </template>
 
 
 <script>
-import { computed, onMounted, reactive } from "@vue/runtime-core"
+import { computed, reactive } from "@vue/runtime-core"
 import { eventService } from "../services/EventService"
 import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
@@ -115,8 +120,6 @@ export default {
   setup() {
     const newComment = reactive({
       editable: {},
-    })
-    onMounted(async () => {
     })
     return {
       newComment,
@@ -127,9 +130,10 @@ export default {
       amAttending: computed(() => AppState.attendees.some(
         a => a.accountId == AppState.account.id && a.eventId == AppState.activeEvent.id)
       ),
-      async isAttending() {
+      async attend() {
         try {
           await eventService.attendEvent({ eventId: this.event.id, accountId: this.account.id })
+          await eventService.getActiveEvent(this.event.id);
         } catch (error) {
           logger.log(error)
           Pop.toast("Attend event did not work", "error")
@@ -137,7 +141,8 @@ export default {
       },
       async unattend() {
         try {
-          await eventService.unattend({ eventId: this.event.id, accountId: this.account.id })
+          await eventService.unattendEvent({ eventId: this.event.id, accountId: this.account.id })
+          await eventService.getActiveEvent(this.event.id);
         } catch (error) {
           logger.log(error)
           Pop.toast("Unattend event did not work", "error")
@@ -145,8 +150,8 @@ export default {
       },
       async cancelEvent() {
         try {
-          this.event.isCanceled = true
-          await eventService.cancelEvent(this.event)
+          await eventService.cancelEvent(this.event.id)
+          await eventService.getActiveEvent(this.event.id);
         } catch (error) {
           logger.log(error)
           Pop.toast("Cancel event did not work", "error")

@@ -1,5 +1,4 @@
 import { AppState } from "../AppState"
-import { router } from "../router"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
@@ -7,24 +6,16 @@ import { api } from "./AxiosService"
 class EventService{
   async getAllEvents(){
     const res = await api.get('api/events')
-    logger.log(res.data)
     AppState.events = res.data
   }
 
-  async getAllEventsByAccountId(id){
-    logger.log(id)
-    const res = await api.get(`/api/events/${id}/events`)
-    logger.log(res.data)
-    AppState.attendees = res.data
-  }
-  async getActiveEvent(id){
+    async getActiveEvent(id){
    const res = await api.get(`api/events/${id}`)
     AppState.activeEvent = res.data
   }
 
   async createEvent(event){
     const res = await api.post('api/events/', event)
-    // logger.log(res.data)
     AppState.activeEvent = res.data
   }
 
@@ -33,22 +24,18 @@ class EventService{
     AppState.activeEvent = res.data
   }
 
-  async cancelEvent(event){
-    logger.log(event)
-    const res = await api.put(`api/events/${event.id}`, event)
-    logger.log(res.data)
+  async cancelEvent(id){
+    const res = await api.delete(`api/events/${id}`)
     AppState.activeEvent = res.data
   }
 
   async attendEvent(attendee){
-    logger.log(attendee)
     const res = await api.post('api/attendees', attendee)
     AppState.attendees.push(res.data)
   }
 
-  async unattend(attendee){
+  async unattendEvent(attendee){
     const attendeeRecord = AppState.attendees.find(a=> a.eventId == attendee.eventId && a.accountId == attendee.accountId)
-    logger.log(attendeeRecord)
     const res = await api.delete(`api/attendees/${attendeeRecord.id}`)
     AppState.attendees = AppState.attendees.filter(a=>a.id != attendeeRecord.id)
   }
@@ -65,7 +52,6 @@ class EventService{
 
   async getAttendeesByEvent(id){
     const res = await api.get(`api/events/${id}/attendees`)
-    logger.log(res.data)
     AppState.attendees = res.data
   }
 

@@ -1,5 +1,6 @@
 import { dbContext } from '../db/DbContext'
 import { BadRequest, Forbidden } from '../utils/Errors'
+import { logger } from '../utils/Logger'
 
 class TowerEventService {
   async createEvent(body) {
@@ -26,6 +27,25 @@ class TowerEventService {
     return Event
   }
 
+  async capacityUp(id) {
+    const update = await dbContext.TowerEvent.findById(id)
+    if (update.capacity <= 0) {
+      throw new BadRequest('This event is at capacity')
+    }
+    update.capacity--
+    logger.log(update)
+    const updated = await dbContext.TowerEvent.findByIdAndUpdate(id, update, { new: true })
+    logger.log(updated)
+    return updated
+  }
+
+  async capacityDown(id) {
+    const update = await dbContext.TowerEvent.findById(id)
+    update.capacity++
+    const updated = await dbContext.TowerEvent.findByIdAndUpdate(id, update, { new: true })
+    return updated
+  }
+
   async editEvent(body) {
     const Event = await this.getEventById({ _id: body.id })
     if (Event.creatorId.toString() !== body.creatorId) {
@@ -40,10 +60,9 @@ class TowerEventService {
   async cancelEvent(id, update) {
     const Event = await this.getEventById(id)
     if (Event.creatorId.toString() !== update.creatorId) {
-      throw new Forbidden('Nah')
+      throw new Forbidden('Nah Bruh!')
     }
     const newEvent = await dbContext.TowerEvent.findByIdAndUpdate(id, update, { new: true })
-
     return newEvent
   }
 }

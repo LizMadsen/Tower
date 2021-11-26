@@ -40,8 +40,6 @@ import Pop from "../utils/Pop";
 import { accountService } from "../services/AccountService";
 import { Modal } from 'bootstrap';
 import { computed, reactive } from '@vue/reactivity';
-import { eventService } from "../services/EventService";
-
 
 export default {
   props: { account: { type: Object } },

@@ -3,7 +3,6 @@ import { towerEventService } from '../services/TowerEventService'
 import BaseController from '../utils/BaseController'
 import { attendeeService } from '../services/AttendeeService'
 import { commentService } from '../services/CommentService'
-import { logger } from '../utils/Logger'
 
 export class TowerEventController extends BaseController {
   constructor() {
@@ -13,7 +12,6 @@ export class TowerEventController extends BaseController {
       .get('/:eventId', this.getEventById)
       .get('/:eventId/comments', this.getCommentsByEvent)
       .get('/:eventId/attendees', this.getAttendeesByEvent)
-      .get('/:accountId/events', this.getEventsByAccountId)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createEvent)
       .put('/:eventId', this.editEvent)
@@ -42,15 +40,6 @@ export class TowerEventController extends BaseController {
   async getAttendeesByEvent(req, res, next) {
     try {
       const events = await attendeeService.getEventAttendance({ eventId: req.params.eventId })
-      return res.send(events)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  async getEventsByAccountId(req, res, next) {
-    try {
-      const events = await attendeeService.getEventAttendance({ accountId: req.params.accountId })
       return res.send(events)
     } catch (error) {
       next(error)
@@ -91,9 +80,8 @@ export class TowerEventController extends BaseController {
   async cancelEvent(req, res, next) {
     try {
       const creatorId = req.userInfo.id
-      const id = req.params.eventId
-
-      const canceledEvent = await towerEventService.cancelEvent(id, { isCanceled: true, creatorId: creatorId })
+      const eventId = req.params.eventId
+      const canceledEvent = await towerEventService.cancelEvent(eventId, { isCanceled: true, creatorId: creatorId })
       return res.send(canceledEvent)
     } catch (error) {
       next(error)

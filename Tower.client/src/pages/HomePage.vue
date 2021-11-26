@@ -22,10 +22,8 @@
 
 <script>
 import { computed, onMounted, reactive } from "@vue/runtime-core"
-import { watchEffect } from "@vue/runtime-core"
 import { eventService } from "../services/EventService"
 import { AppState } from "../AppState"
-import { logger } from "../utils/Logger"
 export default {
   name: 'Home',
   setup() {

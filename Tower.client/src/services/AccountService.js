@@ -20,6 +20,11 @@ class AccountService {
       logger.error('Cannot update profile', 'error')
     }
   }
+
+  async getAccountAttendees(id){
+    const res = await api.get(`/account/${id}/attendees`)
+    AppState.attendees = res.data
+  }
 }
 
 export const accountService = new AccountService()
